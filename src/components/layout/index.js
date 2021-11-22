@@ -64,7 +64,6 @@ function Layout(props) {
                 color: "#fff",
               },
             }}
-            button
             key={val.name}
           >
             {/* <ListItemIcon>
