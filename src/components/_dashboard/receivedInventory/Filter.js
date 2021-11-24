@@ -9,11 +9,10 @@ import {
   FormControl,
   Grid,
   Box,
-  Paper,
-  Typography,
 } from "@mui/material/";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-import AddBox from "./AddBox";
+import Button from "@mui/material/Button";
+
 const data = [
   {
     label: "Supplier Code",
@@ -96,10 +95,6 @@ const data = [
     type: "number",
   },
 ];
-
-function percentage(percent, total) {
-  return ((percent / 100) * total).toFixed(2);
-}
 export default function Filter() {
   const [value, setValue] = React.useState(new Date("2014-08-18T21:11:54"));
 
@@ -109,10 +104,10 @@ export default function Filter() {
 
   return (
     <div>
-      <Box mb={4}>
-        <Grid container spacing={3} justifyContent="space-between">
+      <Box mb={2}>
+        <Grid container spacing={2} justifyContent="space-between">
           {data.map((v, i) => (
-            <Grid item lg={3} key={v.name}>
+            <Grid item lg={3} md={4} sm={6} xs={12} key={v.name}>
               {v.type === "number" ? (
                 <TextField
                   label={v.label}
@@ -129,7 +124,7 @@ export default function Filter() {
                   inputFormat="MM/dd/yyyy"
                   value={value}
                   onChange={handleChange}
-                  renderInput={(params) => <TextField {...params} />}
+                  renderInput={(params) => <TextField fullWidth {...params} />}
                 />
               ) : (
                 <FormControl fullWidth>
@@ -152,8 +147,15 @@ export default function Filter() {
             </Grid>
           ))}
         </Grid>
+        <Box ml="auto" display="table" mt={2}>
+          <Button variant="contained" color="error">
+            Reset
+          </Button>
+          <Button sx={{ ml: 1 }} variant="contained" color="primary">
+            Save
+          </Button>
+        </Box>
       </Box>
-      <AddBox />
     </div>
   );
 }

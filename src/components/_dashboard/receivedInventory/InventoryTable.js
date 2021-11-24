@@ -7,7 +7,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   TextField,
 } from "@mui/material";
 import TableDialog from "./TableDialog";
@@ -47,9 +46,13 @@ const row = [
 ];
 export default function InventoryTable() {
   return (
-    <div>
-      <TableContainer sx={{ boxShadow: "none" }} component={Paper}>
-        <Table>
+    <>
+      <TableContainer sx={{ overflowX: "auto" }}>
+        <Table
+          size="small"
+          aria-label="simple table"
+          sx={{ minWidth: 800, mt: 3 }}
+        >
           <TableHead sx={{ bgcolor: "#5b6266" }}>
             <TableRow>
               <TableCell sx={{ color: "#ffff", fontWeight: 600 }}>
@@ -108,6 +111,6 @@ export default function InventoryTable() {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </>
   );
 }

@@ -1,10 +1,12 @@
 import React from "react";
 
 // mui
-import { Typography } from "@mui/material";
+import { Typography, Box, Button } from "@mui/material";
 
 // ________________
 import Filter from "../components/_dashboard/receivedInventory/Filter";
+import AddBox from "../components/_dashboard/receivedInventory/AddBox";
+import InventoryTable from "../components/_dashboard/receivedInventory/InventoryTable";
 
 export default function Inventory() {
   return (
@@ -13,6 +15,10 @@ export default function Inventory() {
         Received Inventory
       </Typography>
       <Filter />
+      <AddBox />
+
+      <InventoryTable />
+      <Box my={1}></Box>
     </div>
   );
 }

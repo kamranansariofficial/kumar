@@ -12,6 +12,7 @@ import {
   DialogTitle,
   IconButton,
   TextField,
+  TableContainer,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
@@ -37,28 +38,6 @@ const rows = [
     size: "36-46",
     quantity: 400,
     amount: "2,40,000 INR",
-  },
-];
-const dialogRow = [
-  {
-    lot: "129902",
-    bundle: 10,
-    box: 80,
-    size: "36-46",
-    quantity: 400,
-    amount: "2,40,000 INR",
-    type: "number",
-    piece: "400INR",
-  },
-  {
-    lot: "129902",
-    bundle: 10,
-    box: 80,
-    size: "36-46",
-    quantity: 400,
-    amount: "2,40,000 INR",
-    type: "text",
-    piece: "400INR",
   },
 ];
 const BootstrapDialogTitle = (props) => {
@@ -133,7 +112,8 @@ export default function TableDialog({ row }) {
           Lot No. 129902
         </BootstrapDialogTitle>
         <DialogContent>
-          <Table>
+          <TableContainer>
+          <Table sx={{ minWidth: 500 }} >
             <TableHead sx={{ borderBottom: "none" }}>
               <TableRow
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -170,7 +150,9 @@ export default function TableDialog({ row }) {
               ))}
             </TableBody>
           </Table>
-          <Table>
+          </TableContainer>
+          <TableContainer>
+          <Table sx={{ minWidth: 800 }} >
             <TableHead sx={{ bgcolor: "#5b6266" }}>
               <TableRow>
                 <TableCell sx={{ color: "#ffff", fontWeight: 600 }}>
@@ -202,7 +184,6 @@ export default function TableDialog({ row }) {
             </TableHead>
             <TableBody>
               <TableRow
-                key={Math.random()}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -271,9 +252,10 @@ export default function TableDialog({ row }) {
               ))}
             </TableBody>
           </Table>
+          </TableContainer>
         </DialogContent>
         <Box my={2} sx={{ textAlign: "center" }}>
-          <Button variant="text" color="secondary" sx={{ px: 5, mx: 1 }}>
+          <Button variant="text" color="secondary" onClick={handleClose} sx={{ px: 5, mx: 1 }}>
             Cancel
           </Button>
           <Button variant="contained" color="secondary" sx={{ px: 5 }}>

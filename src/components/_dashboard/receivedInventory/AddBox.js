@@ -1,6 +1,5 @@
 import React from "react";
-import { TextField, Grid, Box, Paper, Button } from "@mui/material/";
-import InventoryTable from "./InventoryTable";
+import { TextField, Grid, Box, Paper, Button, Hidden } from "@mui/material/";
 
 const inventoryData = [
   {
@@ -43,12 +42,13 @@ export default function AddBox() {
         sx={{ bgcolor: "#dce2e5", m: "0 -24px", p: "24px" }}
       >
         <Grid container spacing={2}>
-          <Grid item lg={10}>
+          <Grid item lg={10} md={10} sm={10}>
             <Grid container spacing={2}>
               {inventoryData.map((v, i) => (
-                <Grid item lg={2} key={v.name}>
+                <Grid key={Math.random()} item lg={2} md={3} sm={4} xs={6}>
                   {v.type === "number" ? (
                     <TextField
+                      fullWidth
                       label={v.label}
                       id={v.name}
                       // value={}
@@ -64,29 +64,20 @@ export default function AddBox() {
               ))}
             </Grid>
           </Grid>
-          <Grid item md={2}>
-            <Button
-              variant="contained"
-              size="large"
-              fullWidth
-              color="secondary"
-              sx={{ fontSize: "16px", height: 56 }}
-            >
-              Add entry
-            </Button>
-          </Grid>
+          <Hidden mdDown>
+            <Grid item md={2}>
+              <Button
+                variant="contained"
+                size="large"
+                fullWidth
+                color="secondary"
+                sx={{ fontSize: "16px", height: 56 }}
+              >
+                Add entry
+              </Button>
+            </Grid>
+          </Hidden>
         </Grid>
-      </Box>
-      <Box my={1}>
-        <InventoryTable />
-        <Box my={2} sx={{ textAlign: "center" }}>
-          <Button variant="text" color="secondary" sx={{ px: 5, mx: 1 }}>
-            Cancel
-          </Button>
-          <Button variant="contained" color="secondary" sx={{ px: 5 }}>
-            Save
-          </Button>
-        </Box>
       </Box>
     </div>
   );
