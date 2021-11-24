@@ -19,6 +19,7 @@ import Home from "./pages/Home";
 import ReceivedInventory from "./pages/ReceivedInventory";
 import PageNotFound from "./pages/NotFound";
 import Layout from "./components/layout";
+import InventoryManagement from "./pages/InventoryManagement";
 
 function App() {
   return (
@@ -41,6 +42,14 @@ function App() {
                 element={
                   <Layout>
                     <ReceivedInventory />
+                  </Layout>
+                }
+              />
+              <Route
+                path="inventory-management"
+                element={
+                  <Layout>
+                    <InventoryManagement />
                   </Layout>
                 }
               />

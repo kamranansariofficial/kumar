@@ -10,10 +10,10 @@ import {
   Grid,
   Box,
   Paper,
-  Typography
+  Typography,
 } from "@mui/material/";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-import AddBox from "./AddBox"
+import AddBox from "./AddBox";
 const data = [
   {
     label: "Supplier Code",
@@ -60,10 +60,45 @@ const data = [
     name: "receivedBy",
     type: "select",
   },
+  {
+    label: "Total",
+    name: "total",
+    type: "number",
+  },
+  {
+    label: "Freight",
+    name: "freight",
+    type: "number",
+  },
+  {
+    label: "Taxable value",
+    name: "taxableValue",
+    type: "number",
+  },
+  {
+    label: "SGST 2.50% ",
+    name: "Sgst",
+    type: "number",
+  },
+  {
+    label: "CGST 2.50% ",
+    name: "Cgst",
+    type: "number",
+  },
+  {
+    label: "IGST 5%",
+    name: "Igst",
+    type: "number",
+  },
+  {
+    label: "Grand total",
+    name: "grandTotal",
+    type: "number",
+  },
 ];
 
 function percentage(percent, total) {
-  return ((percent / 100) * total).toFixed(2)
+  return ((percent / 100) * total).toFixed(2);
 }
 export default function Filter() {
   const [value, setValue] = React.useState(new Date("2014-08-18T21:11:54"));
@@ -98,13 +133,15 @@ export default function Filter() {
                 />
               ) : (
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">{v.label}</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    {v.label}
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     //   value={age}
                     label={v.label}
-                  //   onChange={handleChange}
+                    //   onChange={handleChange}
                   >
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
@@ -114,21 +151,9 @@ export default function Filter() {
               )}
             </Grid>
           ))}
-          <Grid item lg={4}>
-
-            <Paper elevation={3} sx={{p:2}}>
-              <Typography variant="h6" color="initial" sx={{ display: "block", fontSize: "1rem", fontWeight: 600, textAlign: "right", span:{ fontWeight:500,} }} >Total:<span> 2,40,000</span> </Typography>
-              <Typography variant="h6" color="initial" sx={{ fontSize: "1rem", fontWeight: 600, textAlign: "right",span:{ fontWeight:500,}  }} >Freight:<span>9655,00</span></Typography>
-              <Typography variant="h6" color="initial" sx={{ fontSize: "1rem", fontWeight: 600, textAlign: "right",span:{ fontWeight:500,}  }}  >Taxable value: <span>433840,00</span></Typography>
-              <Typography variant="h6" color="initial" sx={{ fontSize: "1rem", fontWeight: 600, textAlign: "right",span:{ fontWeight:500,} , textTransform: "uppercase" }} >Sgst 2.50% : ----</Typography>
-              <Typography variant="h6" color="initial" sx={{ fontSize: "1rem", fontWeight: 600, textAlign: "right",span:{ fontWeight:500,} , textTransform: "uppercase" }} >Cgst 2.50% : ----</Typography>
-              <Typography variant="h6" color="initial" sx={{ fontSize: "1rem", fontWeight: 600, textAlign: "right",span:{ fontWeight:500,} , textTransform: "uppercase" }} >Igst 5%:<span> 21692</span></Typography>
-              <Typography variant="h6" color="initial" sx={{ fontSize: "1rem", fontWeight: 600, textAlign: "right",span:{ fontWeight:500,}  }} >Grand total:<span>{45550000 - percentage(5, 45550000)} INR</span></Typography>
-            </Paper>
-          </Grid>
         </Grid>
       </Box>
       <AddBox />
-    </div >
+    </div>
   );
 }

@@ -19,8 +19,8 @@ const inventoryData = [
     type: "number",
   },
   {
-    label: "Boxes",
-    name: "boxes",
+    label: "Size",
+    name: "size",
     type: "number",
   },
   {

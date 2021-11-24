@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -36,9 +36,10 @@ const listItems = [
 
 function Layout(props) {
   const { window, children } = props;
+  const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [active, setActive] = React.useState("/");
+  const [active, setActive] = React.useState(location.pathname);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
