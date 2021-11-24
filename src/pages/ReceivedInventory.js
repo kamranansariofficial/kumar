@@ -1,7 +1,7 @@
 import React from "react";
 
 // mui
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 // ________________
 import Filter from "../components/_dashboard/receivedInventory/Filter";
@@ -16,7 +16,6 @@ export default function Inventory() {
       </Typography>
       <Filter />
       <AddBox />
-
       <InventoryTable />
       <Box my={1}></Box>
     </div>

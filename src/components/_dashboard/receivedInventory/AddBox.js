@@ -54,7 +54,6 @@ export default function AddBox() {
                       // value={}
                       // onChange={}
                       type={v.type}
-                      fullWidth
                       variant="outlined"
                     />
                   ) : (
