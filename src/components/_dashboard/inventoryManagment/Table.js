@@ -17,61 +17,6 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TableDialog from "../../_dashboard/receivedInventory/TableDialog";
 import InventoryDialog from "../../_dashboard/inventoryManagment/InventoryDialog";
 import SimpleBackdrop from "../../Backdrop";
-function createData(
-  SNo,
-  STINo,
-  supplierCode,
-  category,
-  lotsNo,
-  total,
-  receivedOn,
-  recStatus,
-  distStatus
-) {
-  return {
-    SNo,
-    STINo,
-    supplierCode,
-    category,
-    lotsNo,
-    receivedOn,
-    total,
-    recStatus,
-    distStatus,
-    history: [
-      {
-        lotNo: 129902,
-        boxes: 10,
-        designCode: 2727,
-        sizes: "38 - 40",
-        rate: "450INR",
-        quantity: 200,
-        difference: 2,
-        amount: "90,000INR",
-      },
-      {
-        lotNo: 129902,
-        boxes: 20,
-        designCode: 2727,
-        sizes: "38 - 40",
-        rate: "450INR",
-        quantity: 200,
-        difference: 4,
-        amount: "90,000INR",
-      },
-      {
-        lotNo: 129902,
-        boxes: 40,
-        designCode: 2727,
-        sizes: "38 - 40",
-        rate: "450INR",
-        quantity: 200,
-        difference: 0,
-        amount: "90,000INR",
-      },
-    ],
-  };
-}
 
 function Row(props) {
   const { row } = props;

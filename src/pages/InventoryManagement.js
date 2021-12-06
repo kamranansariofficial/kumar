@@ -81,7 +81,7 @@ export default function InventoryManagement() {
           data: res.data,
         }))
       );
-  }, []);
+  }, [navigate]);
 
   return (
     <div>
