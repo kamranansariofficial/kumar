@@ -226,43 +226,6 @@ function Row(props) {
   );
 }
 
-const rows = [
-  createData(1, "2202D110", "ACD110", 24, 4.0, 3.99, 3.99, "New", "New"),
-  createData(
-    2,
-    "2202D111",
-    "ACD110",
-    37,
-    4.3,
-    4.99,
-    4.99,
-    "Partial",
-    "Partial"
-  ),
-  createData(
-    3,
-    "2202D112",
-    "ACD110",
-    24,
-    6.0,
-    3.79,
-    3.79,
-    "Complete",
-    "Complete"
-  ),
-  createData(
-    4,
-    "2202D113",
-    "ACD110",
-    67,
-    4.3,
-    2.51,
-    2.51,
-    "Complete",
-    "Complete"
-  ),
-];
-
 export default function InventoryTable({ data }) {
   return (
     <TableContainer component={Paper}>

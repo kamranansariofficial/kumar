@@ -63,7 +63,7 @@ export default function Login() {
     if (data) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
   return (
     <Box
       sx={{

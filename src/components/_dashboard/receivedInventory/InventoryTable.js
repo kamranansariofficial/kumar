@@ -7,7 +7,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
 } from "@mui/material";
 import axios from "axios";
 import SimpleBackdrop from "../../Backdrop";
@@ -29,7 +28,7 @@ export default function InventoryTable({ data, count, sizes }) {
         console.log(err);
         setLoading(false);
       });
-  }, [count]);
+  }, [count, id]);
 
   const getSizes = (v) => {
     const split = v.split(",");

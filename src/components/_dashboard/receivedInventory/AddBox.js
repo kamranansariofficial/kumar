@@ -1,10 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { TextField, Grid, Box, Paper, Button, Hidden } from "@mui/material/";
+import { TextField, Grid, Box, Paper, Button } from "@mui/material/";
 import SimpleBackdrop from "../../Backdrop";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -74,7 +73,7 @@ export default function AddBox({ data, onCount, onChangeSizes, sizes }) {
         console.log(err);
         setLoading(false);
       });
-  }, []);
+  }, [onChangeSizes]);
 
   return (
     <div>

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 // react router dom
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // mui
 import { Typography, Box } from "@mui/material";
 
@@ -35,7 +35,7 @@ export default function Inventory() {
         data: res.data,
       }))
     );
-  }, []);
+  }, [navigate]);
 
   return state.loading ? (
     <BackDrop />
