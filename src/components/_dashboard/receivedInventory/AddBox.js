@@ -32,7 +32,7 @@ export default function AddBox({ data, onCount, onChangeSizes, sizes }) {
   const onSubmit = () => {
     setLoading(true);
     axios
-      .post("/api/Lot", {
+      .post("http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/Lot", {
         ...state,
       })
       .then((res) => {
@@ -64,7 +64,7 @@ export default function AddBox({ data, onCount, onChangeSizes, sizes }) {
   React.useEffect(() => {
     setLoading(true);
     axios
-      .get(`/api/Constants`)
+      .get(`http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/Constants`)
       .then((response) => {
         onChangeSizes(response.data.sizeData);
         setLoading(false);

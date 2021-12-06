@@ -19,7 +19,7 @@ export default function InventoryTable({ data, count, sizes }) {
   const [state, setstate] = React.useState();
   React.useEffect(() => {
     axios
-      .get(`/api/Lot?purchaseInvoiceId=${id}`)
+      .get(`http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/Lot?purchaseInvoiceId=${id}`)
       .then((response) => {
         setstate(response);
         setLoading(false);

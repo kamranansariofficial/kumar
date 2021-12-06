@@ -72,7 +72,7 @@ export default function InventoryManagement() {
     setstate((oldState) => ({ ...oldState, loading: true }));
     axios
       .get(
-        "/api/PurchaseInvoice?limit=10&offset=0"
+        "http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/PurchaseInvoice?limit=10&offset=0"
       )
       .then((res) =>
         setstate((oldState) => ({

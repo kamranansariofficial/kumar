@@ -40,7 +40,7 @@ export default function Login() {
     setLoading(true);
     axios
       .post(
-        "/api/Login/Authenticate",
+        "http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/Login/Authenticate",
         {
           ...state,
         }

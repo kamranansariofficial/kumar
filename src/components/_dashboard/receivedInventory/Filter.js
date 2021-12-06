@@ -147,7 +147,7 @@ export default function Filter({ res, onShow }) {
     setLoading(true);
     axios
       .post(
-        "/api/PurchaseInvoice",
+        "http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/PurchaseInvoice",
         {
           ...state,
         }

@@ -28,7 +28,7 @@ export default function Inventory() {
       navigate("/login");
     }
     setstate((oldState) => ({ ...oldState, loading: true }));
-    axios.get("/api/Constants").then((res) =>
+    axios.get("http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/Constants").then((res) =>
       setstate((oldState) => ({
         ...oldState,
         loading: false,

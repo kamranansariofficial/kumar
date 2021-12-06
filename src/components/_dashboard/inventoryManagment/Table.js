@@ -30,7 +30,7 @@ function Row(props) {
       setstate({ ...state, loading: true });
       axios
         .get(
-          `/api/Lot?purchaseInvoiceId=${prop.id}`
+          `http://ec2-18-220-233-68.us-east-2.compute.amazonaws.com/api/Lot?purchaseInvoiceId=${prop.id}`
         )
         .then((response) => {
           setstate({ ...state, loading: false, data: response.data });
