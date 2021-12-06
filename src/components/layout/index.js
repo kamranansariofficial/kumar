@@ -13,6 +13,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 const drawerWidth = 240;
 const listItems = [
@@ -36,8 +37,8 @@ const listItems = [
 
 function Layout(props) {
   const { window, children } = props;
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [active, setActive] = React.useState(location.pathname);
 
@@ -110,6 +111,17 @@ function Layout(props) {
           >
             Kumar Shirts & Trousers
           </Typography>
+          <Button
+            onClick={() => {
+              localStorage.removeItem("user");
+              navigate("/login");
+            }}
+            variant="contained"
+            color="info"
+            sx={{ ml: "auto" }}
+          >
+            logout
+          </Button>
         </Toolbar>
       </AppBar>
       <Box

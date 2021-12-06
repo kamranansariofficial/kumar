@@ -1,4 +1,7 @@
 import React from "react";
+import axios from "axios";
+// react router dom
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 // mui
@@ -10,6 +13,7 @@ import Box from "@mui/material/Box";
 // _____________________
 import InventoryTable from "../components/_dashboard/inventoryManagment/Table";
 import { useTheme } from "@mui/material/styles";
+import BackDrop from "../components/Backdrop";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,12 +49,39 @@ function a11yProps(index) {
 }
 
 export default function InventoryManagement() {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [state, setstate] = React.useState({
+    loading: true,
+    data: null,
+    open: false,
+    inventoryData: null,
+    count: 0,
+  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  React.useEffect(() => {
+    const data = localStorage.getItem("user");
+    if (!data) {
+      navigate("/login");
+    }
+    setstate((oldState) => ({ ...oldState, loading: true }));
+    axios
+      .get(
+        "/api/PurchaseInvoice?limit=10&offset=0"
+      )
+      .then((res) =>
+        setstate((oldState) => ({
+          ...oldState,
+          loading: false,
+          data: res.data,
+        }))
+      );
+  }, []);
 
   return (
     <div>
@@ -89,7 +120,7 @@ export default function InventoryManagement() {
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <InventoryTable />
+          {state.loading ? <BackDrop /> : <InventoryTable data={state.data} />}
         </TabPanel>
         <TabPanel value={value} index={1}>
           Item Two

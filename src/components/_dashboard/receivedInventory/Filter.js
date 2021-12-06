@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 // mui
 import {
@@ -12,12 +13,15 @@ import {
 } from "@mui/material/";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import Button from "@mui/material/Button";
+import SimpleBackdrop from "../../Backdrop";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const data = [
   {
     label: "Supplier Code",
-    name: "supplierCode",
-    type: "number",
+    name: "supplier",
+    type: "select",
   },
   {
     label: "STI No.",
@@ -26,18 +30,18 @@ const data = [
   },
   {
     label: "STI Date",
-    name: "stiDate",
+    name: "invoiceDate",
     type: "date",
   },
   {
     label: "Received on",
-    name: "receivedOn",
+    name: "receivedDate",
     type: "date",
   },
   {
     label: "LR No.",
-    name: "lrNo.",
-    type: "number",
+    name: "lrNumber",
+    type: "text",
   },
   {
     label: "Category",
@@ -47,7 +51,7 @@ const data = [
   {
     label: "Total Quantity",
     name: "totalQuantity",
-    type: "number",
+    type: "text",
   },
   {
     label: "Shipped by",
@@ -56,37 +60,37 @@ const data = [
   },
   {
     label: "Received by",
-    name: "receivedBy",
+    name: "recievedBy",
     type: "select",
   },
   {
     label: "Total",
-    name: "total",
+    name: "totalAmount",
     type: "number",
   },
   {
-    label: "Freight",
-    name: "freight",
+    label: "Frieght",
+    name: "frieght",
     type: "number",
   },
   {
     label: "Taxable value",
-    name: "taxableValue",
+    name: "taxableAmount",
     type: "number",
   },
   {
     label: "SGST 2.50% ",
-    name: "Sgst",
+    name: "sgst",
     type: "number",
   },
   {
     label: "CGST 2.50% ",
-    name: "Cgst",
+    name: "cgst",
     type: "number",
   },
   {
     label: "IGST 5%",
-    name: "Igst",
+    name: "igst",
     type: "number",
   },
   {
@@ -95,25 +99,109 @@ const data = [
     type: "number",
   },
 ];
-export default function Filter() {
-  const [value, setValue] = React.useState(new Date("2014-08-18T21:11:54"));
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+const initializeData = {
+  categoryId: "",
+  supplierCode: "",
+  recievedBy: "",
+  shippedBy: "",
+  invoiceNumber: "string",
+  invoiceDate: new Date().toISOString(),
+  receivedDate: new Date().toISOString(),
+  lrNumber: "",
+  totalQuantity: "",
+  receivedStatus: "",
+  distributedStatus: "",
+  frieght: "",
+  stiNo: Number,
+  taxableAmount: "",
+  totalAmount: "",
+  grandTotal: "",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  sgst: "",
+  cgst: "",
+  igst: "",
+};
 
-  const handleChange = (newValue) => {
-    setValue(newValue);
+export default function Filter({ res, onShow }) {
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [state, setstate] = React.useState({ ...initializeData });
+
+  const handleChange = (prop) => (e) => {
+    setstate({
+      ...state,
+      [prop === "category"
+        ? "categoryId"
+        : prop === "supplier"
+        ? "supplierCode"
+        : prop]: e.target.value,
+    });
+  };
+
+  const onSubmit = () => {
+    setLoading(true);
+    axios
+      .post(
+        "/api/PurchaseInvoice",
+        {
+          ...state,
+        }
+      )
+      .then((res) => {
+        setError(false);
+        setOpen(true);
+        setLoading(false);
+        onShow(res.data);
+      })
+      .catch((err) => {
+        setError(true);
+        setOpen(true);
+        setLoading(false);
+      });
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   return (
     <div>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity={error ? "error" : "success"}
+          sx={{ width: "100%" }}
+        >
+          {error ? "Some fields are missing!" : "Submitted successfully!"}
+        </Alert>
+      </Snackbar>
+      {loading && <SimpleBackdrop />}
       <Box mb={2}>
         <Grid container spacing={2} justifyContent="space-between">
           {data.map((v, i) => (
             <Grid item lg={3} md={4} sm={6} xs={12} key={v.name}>
-              {v.type === "number" ? (
+              {v.type === "number" || v.type === "text" ? (
                 <TextField
                   label={v.label}
                   id={v.name}
-                  // value={}
-                  // onChange={}
+                  value={state[v.name]}
+                  onChange={(e) =>
+                    setstate({
+                      ...state,
+                      [v.name]:
+                        v.name === "totalQuantity" || v.name === "lrNumber"
+                          ? e.target.value
+                          : parseInt(e.target.value),
+                    })
+                  }
                   type={v.type}
                   fullWidth
                   variant="outlined"
@@ -122,8 +210,13 @@ export default function Filter() {
                 <DesktopDatePicker
                   label={v.label}
                   inputFormat="MM/dd/yyyy"
-                  value={value}
-                  onChange={handleChange}
+                  value={state[v.name]}
+                  onChange={(date) =>
+                    setstate({
+                      ...state,
+                      [v.name]: new Date(date).toISOString(),
+                    })
+                  }
                   renderInput={(params) => <TextField fullWidth {...params} />}
                 />
               ) : (
@@ -134,13 +227,23 @@ export default function Filter() {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    //   value={age}
+                    // value={state[]}
                     label={v.label}
-                    //   onChange={handleChange}
+                    onChange={handleChange(v.name)}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {res[v.name + "Data"].map((val) => (
+                      <MenuItem
+                        value={
+                          val[
+                            v.name === "supplier"
+                              ? "supplierCode"
+                              : v.name + "Id"
+                          ]
+                        }
+                      >
+                        {val[v.name + "Name"]}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               )}
@@ -148,10 +251,19 @@ export default function Filter() {
           ))}
         </Grid>
         <Box ml="auto" display="table" mt={2}>
-          <Button variant="contained" color="error">
+          <Button
+            onClick={() => setstate({ ...initializeData })}
+            variant="contained"
+            color="error"
+          >
             Reset
           </Button>
-          <Button sx={{ ml: 1 }} variant="contained" color="primary">
+          <Button
+            onClick={onSubmit}
+            sx={{ ml: 1 }}
+            variant="contained"
+            color="primary"
+          >
             Save
           </Button>
         </Box>

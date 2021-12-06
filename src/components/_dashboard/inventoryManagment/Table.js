@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Collapse from "@mui/material/Collapse";
@@ -14,7 +15,8 @@ import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import TableDialog from "../../_dashboard/receivedInventory/TableDialog";
-import InventoryDialog from "../../_dashboard/inventoryManagment/InventoryDialog"
+import InventoryDialog from "../../_dashboard/inventoryManagment/InventoryDialog";
+import SimpleBackdrop from "../../Backdrop";
 function createData(
   SNo,
   STINo,
@@ -74,6 +76,28 @@ function createData(
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [state, setstate] = React.useState({
+    loading: false,
+    data: null,
+  });
+  const onOpen = (prop) => () => {
+    if (!open) {
+      setstate({ ...state, loading: true });
+      axios
+        .get(
+          `/api/Lot?purchaseInvoiceId=${prop.id}`
+        )
+        .then((response) => {
+          setstate({ ...state, loading: false, data: response.data });
+          setOpen(!open);
+        })
+        .catch((err) => {
+          setstate({ ...state, loading: false });
+        });
+    } else {
+      setOpen(false);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -86,117 +110,121 @@ function Row(props) {
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => setOpen(!open)}
+            onClick={onOpen(row)}
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell>{row.SNo}</TableCell>
+        <TableCell>{row.id}</TableCell>
         <TableCell>
           <Link href="/">{row.STINo}</Link>
         </TableCell>
         <TableCell>{row.supplierCode}</TableCell>
-        <TableCell>{row.category}</TableCell>
-        <TableCell>{row.lotsNo}</TableCell>
-        <TableCell>{row.total}</TableCell>
-        <TableCell>{row.receivedOn}</TableCell>
+        <TableCell>{row.categoryId}</TableCell>
+        <TableCell>{row.lrNumber}</TableCell>
+        <TableCell>{row.totalAmount}</TableCell>
+        <TableCell>{row.receivedDate}</TableCell>
         <TableCell>
           {" "}
           <Chip
             size="small"
-            label={row.recStatus}
+            label={row.recStatus ? row.recStatus : "New"}
             color={
               row.recStatus === "New"
                 ? "info"
                 : row.recStatus === "Partial"
-                  ? "warning"
-                  : "success"
+                ? "warning"
+                : "success"
             }
           />
         </TableCell>
         <TableCell>
           <Chip
             size="small"
-            label={row.distStatus}
+            label={row.distStatus ? row.distStatus : "New"}
             color={
               row.distStatus === "New"
                 ? "info"
                 : row.distStatus === "Partial"
-                  ? "warning"
-                  : "success"
+                ? "warning"
+                : "success"
             }
           />
         </TableCell>
       </TableRow>
       <TableRow>
         <TableCell sx={{ pt: 0, pb: 0 }} colSpan={10}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box>
-              <TableContainer>
-                <Table sx={{ minWidth: 800 }} aria-label="purchases">
-                  <TableHead
-                    sx={{ bgcolor: "#0DA1DA", "& th": { color: "#fff" } }}
-                  >
-                    <TableRow>
-                      <TableCell>Lot No.</TableCell>
-                      <TableCell>Boxes</TableCell>
-                      <TableCell>Design Code</TableCell>
-                      <TableCell>Sizes</TableCell>
-                      <TableCell>Rate/Piece</TableCell>
-                      <TableCell>Quantity</TableCell>
-                      <TableCell>Difference</TableCell>
-                      <TableCell>Amount</TableCell>
-                      <TableCell />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row.history.map((historyRow) => (
-                      <TableRow key={Math.random()}>
-                        <TableCell component="th" scope="row">
-                          {historyRow.lotNo}
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            color: "#0DA1DA",
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                          }}
-                        >
-                          <InventoryDialog row={historyRow} />
-                        </TableCell>
-                        <TableCell>{historyRow.designCode}</TableCell>
-                        <TableCell>{historyRow.sizes}</TableCell>
-                        <TableCell>{historyRow.rate}</TableCell>
-                        <TableCell>{historyRow.quantity}</TableCell>
-                        <TableCell
-                          sx={{
-                            color:
-                              historyRow.difference === 4
-                                ? "#FF1844"
-                                : historyRow.difference === 2
-                                  ? "grey"
-                                  : "green",
-                          }}
-                        >
-                          {historyRow.difference}
-                        </TableCell>
-                        <TableCell>{historyRow.amount}</TableCell>
-                        <TableCell>
-                          <TableDialog row={historyRow} />
-                        </TableCell>
+          {state.loading ? (
+            <SimpleBackdrop />
+          ) : (
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box>
+                <TableContainer>
+                  <Table sx={{ minWidth: 800 }} aria-label="purchases">
+                    <TableHead
+                      sx={{ bgcolor: "#0DA1DA", "& th": { color: "#fff" } }}
+                    >
+                      <TableRow>
+                        <TableCell>Lot No.</TableCell>
+                        <TableCell>Boxes</TableCell>
+                        <TableCell>Design Code</TableCell>
+                        <TableCell>Sizes</TableCell>
+                        <TableCell>Rate/Piece</TableCell>
+                        <TableCell>Quantity</TableCell>
+                        <TableCell>Difference</TableCell>
+                        <TableCell>Amount</TableCell>
+                        <TableCell />
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          </Collapse>
+                    </TableHead>
+                    <TableBody>
+                      {state.data &&
+                        state.data.map((historyRow) => (
+                          <TableRow key={Math.random()}>
+                            <TableCell component="th" scope="row">
+                              {historyRow.lotNumber}
+                            </TableCell>
+                            <TableCell
+                              sx={{
+                                color: "#0DA1DA",
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              <InventoryDialog row={historyRow} />
+                            </TableCell>
+                            <TableCell>{historyRow.designCode}</TableCell>
+                            <TableCell>{historyRow.sizeIds}</TableCell>
+                            <TableCell>{historyRow.totalAmount}</TableCell>
+                            <TableCell>{historyRow.quantity}</TableCell>
+                            <TableCell
+                              sx={{
+                                color:
+                                  historyRow.difference === 4
+                                    ? "#FF1844"
+                                    : historyRow.difference === 2
+                                    ? "grey"
+                                    : "green",
+                              }}
+                            >
+                              {historyRow.difference}
+                            </TableCell>
+                            <TableCell>{historyRow.totalAmount}</TableCell>
+                            <TableCell>
+                              <TableDialog row={historyRow} />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Collapse>
+          )}
         </TableCell>
       </TableRow>
     </React.Fragment>
   );
 }
-
 
 const rows = [
   createData(1, "2202D110", "ACD110", 24, 4.0, 3.99, 3.99, "New", "New"),
@@ -235,7 +263,7 @@ const rows = [
   ),
 ];
 
-export default function InventoryTable() {
+export default function InventoryTable({ data }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 800 }} aria-label="a dense table">
@@ -254,7 +282,7 @@ export default function InventoryTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <Row key={Math.random()} row={row} />
           ))}
         </TableBody>
